@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Guess the Number</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff8f0;
+      position: relative;
+    }
+
+    /* Floating Math Symbols */
+    .symbol {
+      position: absolute;
+      font-size: 28px;
+      font-weight: bold;
+      color: #8b4513;
+      opacity: 0.3;
+      animation: floaty 6s ease-in-out infinite;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes floaty {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.3;
+      }
+      50% {
+        transform: translateY(-30px) rotate(180deg);
+        opacity: 0.5;
+      }
+      100% {
+        transform: translateY(0) rotate(360deg);
+        opacity: 0.3;
+      }
+    }
+
+    .container {
+      position: absolute;
+      top: 250px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 30px;
+      background-color: #8f552c58;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(169, 88, 88, 0.1);
+      text-align: center;
+      z-index: 1;
+      width: 300px;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #5a2d0c;
+    }
+
+    input {
+      padding: 10px;
+      width: 160px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #8b4513;
+      outline: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+      background-color: #8b4513;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #4b2c20;
+    }
+
+    #changeBg {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 2;
+    }
+
+    .hint {
+      text-align: center;
+      padding: 20px;
+      font-size: 16px;
+      color: #5a2d0c;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      color: #5a2d0c;
+      font-family: 'Arial', sans-serif;
+      opacity: 0.7;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Game Container -->
+  <div class="container">
+    <h1>Guess the Number (0 - 100)</h1>
+    <input type="number" id="userInput" placeholder="Your Guess" />
+    <br><br>
+    <button onclick="checkGuess()">Guess!</button>
+    <p id="message"></p>
+  </div>
+
+  <!-- Hint Text -->
+  <div class="hint">
+    Please enter a number from 0 to 100 and try to guess the correct one.<br>
+    <strong>Pro tip:</strong> Start from a high or low guess and follow the clues!
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © Numberdoodle | Designed with love by Ria Ninawe
+  </footer>
+
+  <!-- Change Background Button -->
+  <button id="changeBg" onclick="changeBackground()">Change Background</button>
+
+  <!-- Floating Math Symbols -->
+  <script>
+    const mathSymbols = ['+', '−', '×', '÷', '√', 'π', '=', '%', '∞'];
+    for (let i = 0; i < 25; i++) {
+      const symbol = document.createElement("span");
+      symbol.classList.add("symbol");
+      symbol.textContent = mathSymbols[Math.floor(Math.random() * mathSymbols.length)];
+      symbol.style.left = Math.random() * window.innerWidth + "px";
+      symbol.style.top = Math.random() * window.innerHeight + "px";
+      document.body.appendChild(symbol);
+    }
+  </script>
+
+  <!-- Game Logic -->
+  <script>
+    const secretNumber = Math.floor(Math.random() * 101);
+    let attempts = 0;
+
+    function checkGuess() {
+      const userGuess = parseInt(document.getElementById("userInput").value);
+      const message = document.getElementById("message");
+      attempts++;
+
+      if (isNaN(userGuess)) {
+        message.textContent = "⛔ Please enter a number!";
+      } else if (userGuess < 0 || userGuess > 100) {
+        message.textContent = "⚠️ Guess must be between 0 and 100!";
+      } else if (userGuess < secretNumber) {
+        message.textContent = "📉 Too low! Try a higher number.";
+      } else if (userGuess > secretNumber) {
+        message.textContent = "📈 Too high! Try a lower number.";
+      } else {
+        message.textContent = `🎉 Correct! You guessed it in ${attempts} tries!`;
+      }
+    }
+  </script>
+
+  <!-- Background Color Changer -->
+  <script>
+    function changeBackground() {
+      const colors = ["#fff8f0", "#fcefe3", "#fff2dc", "#eae2d6", "#fef6f0"];
+      const rand = Math.floor(Math.random() * colors.length);
+      document.body.style.backgroundColor = colors[rand];
+    }
+  </script>
+
+</body>
+</html>
